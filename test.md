@@ -3,6 +3,6 @@
 
 ## sites
 
-https://www.jetbrains.com/
+intelliJ: https://www.jetbrains.com/
 
-https://github.com/simpleego/JavaStudy/
+JavaStude : https://github.com/simpleego/JavaStudy/

@@ -8,18 +8,18 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class MainUi extends JFrame {
-    private JTextField arrayLengthFld = new JTextField("10",10),
-            minValFld = new JTextField("1",10),
-            maxValFld = new JTextField("100",10);
+    private JTextField arrayLengthFld = new JTextField("10", 10),
+            minValFld = new JTextField("1", 10),
+            maxValFld = new JTextField("100", 10);
     private JTextArea resFld = new JTextArea();
     private JLabel arrayLengthLbl, minValLbl, maxValLbl, resLbl;
     private JButton randomBtn = new JButton("<HTML>중복있는<br>" +
-                                            "무작위</HTML>"),
+            "무작위</HTML>"),
             arithmeticBtn = new JButton("순차적"),
             linearBtn = new JButton("선형배열"),
             planeBtn = new JButton("평면배열"),
             ranDupBtn = new JButton("<HTML>중복없는<br>" +
-                                        "무작위</HTML>"),
+                    "무작위</HTML>"),
             genBtn = new JButton("생성");
     private final int EX_BTN_LST_LENGTH = 20;
 
@@ -28,14 +28,14 @@ public class MainUi extends JFrame {
 
     public MainUi() throws HeadlessException {
         setTitle("Array Processor");
-        setSize(500,500);
+        setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
         setResizable(false);
 
-        JPanel buttonPanel1 = new JPanel(new GridLayout(1,5));
-        JPanel buttonPanel2 = new JPanel(new GridLayout(4,5));
-        JPanel textPanel = new JPanel(new GridLayout(4,2));
+        JPanel buttonPanel1 = new JPanel(new GridLayout(1, 5));
+        JPanel buttonPanel2 = new JPanel(new GridLayout(4, 5));
+        JPanel textPanel = new JPanel(new GridLayout(4, 2));
         JPanel resultPanel = new JPanel();
 
         arrayLengthLbl = new JLabel("배열길이:");
@@ -43,20 +43,23 @@ public class MainUi extends JFrame {
         maxValLbl = new JLabel("최 대 값:");
         resLbl = new JLabel("결과:");
 
-        for(int i = 0; i < EX_BTN_LST_LENGTH; i++) {
-            exBtnLst.add(new JButton(""+(i+1)));
+        for (int i = 0; i < EX_BTN_LST_LENGTH; i++) {
+            exBtnLst.add(new JButton("" + (i + 1)));
         }
 
+        buttonPanel1.add(linearBtn);
+        buttonPanel1.add(planeBtn);
         buttonPanel1.add(randomBtn);
         buttonPanel1.add(ranDupBtn);
         buttonPanel1.add(arithmeticBtn);
-        buttonPanel1.add(linearBtn);
-        buttonPanel1.add(planeBtn);
         add(buttonPanel1);
 
-        textPanel.add(arrayLengthLbl); textPanel.add(arrayLengthFld);
-        textPanel.add(minValLbl); textPanel.add(minValFld);
-        textPanel.add(maxValLbl); textPanel.add(maxValFld);
+        textPanel.add(arrayLengthLbl);
+        textPanel.add(arrayLengthFld);
+        textPanel.add(minValLbl);
+        textPanel.add(minValFld);
+        textPanel.add(maxValLbl);
+        textPanel.add(maxValFld);
         textPanel.add(genBtn);
         add(textPanel);
         for (int i = 0; i < EX_BTN_LST_LENGTH; i++) {
@@ -64,14 +67,15 @@ public class MainUi extends JFrame {
         }
         add(buttonPanel2);
 
-        resultPanel.add(resLbl); resultPanel.add(resFld);
+        resultPanel.add(resLbl);
+        resultPanel.add(resFld);
         add(resultPanel);
 
         randomBtn.addActionListener(e -> {
             try {
                 setRandomArray();
                 System.out.println("랜덤 배열");
-                resFld.setText(resFld.getText()+"랜덤 배열 준비");
+                resFld.setText(resFld.getText() + "랜덤 배열 준비");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
@@ -98,13 +102,30 @@ public class MainUi extends JFrame {
 
         linearBtn.addActionListener(e -> {
             try {
-                ap = new LinearArrayProcessor();
+                setLinearArray();
                 System.out.println("선형 배열을 선택");
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         });
 
+        genBtn.addActionListener(e -> {
+            try {
+                generateArray();
+                System.out.println("배열 생성");
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        exBtnLst.get(0).addActionListener(e -> {
+            try {
+                System.out.println("배열 출력");
+                printArray();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         setVisible(true);
     }
@@ -119,5 +140,26 @@ public class MainUi extends JFrame {
 
     private void setArithmeticArray() {
         ap.setArithmetic();
+    }
+
+    private void setLinearArray() {
+        ap = new LinearArrayProcessor();
+    }
+
+    private void generateArray() {
+        try {
+            int length = Integer.parseInt(arrayLengthFld.getText());
+            int start = Integer.parseInt(minValFld.getText());
+            int end = Integer.parseInt(maxValFld.getText());
+            ap.generateArray(length, start, end);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void printArray() {
+        ap.printArray();
+        resFld.setText(ap.getResult());
     }
 }
